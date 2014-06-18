@@ -54,6 +54,8 @@ Usage: zcollective [options]
         --connect-by-ip              When adding new hosts, get Zabbix to connect to those hosts by
                                      IP address instead of hostname. Useful in scenarios where you
                                      don't have control over your DNS.
+        --match-by-name              Always match templates on their 'Template Name' even if they
+                                     have a 'Visible Name'
         --lockfile=f                 Use alternative lock file
         --timeout=t                  Time out after number of seconds
 ```

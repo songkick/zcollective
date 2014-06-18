@@ -79,6 +79,11 @@ optparse = OptionParser.new do |opts|
         options[:connect_by_ip] = 1
     end
 
+    options[:match_by_name] = false
+    opts.on('--match-by-name','Always match templates on their \'Template Name\' even if they have a \'Visible Name\'') do
+        options[:match_by_name] = true
+    end
+
     options[:lockfile] = "/tmp/zcollective.lock"
     opts.on('--lockfile=f', 'Use alternative lock file') do |f|
         options[:lockfile] = f
@@ -164,7 +169,10 @@ zabbix_client.request( 'template.get',
     'search' => '', 
     'output' => 'extend' 
 ).each do |template|
-
+    if options[:match_by_name] and template.has_key?('host')
+        template['name'] = template['host']
+    end
+    
     log.debug( "\tName: #{template['name']} ID: #{template['templateid']}" )
     zabbix_templates[ template['name'] ] = template['templateid']
 
