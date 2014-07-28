@@ -50,6 +50,7 @@ Usage: zcollective [options]
         --zabbix-pass pass           Zabbix API password
         --debug                      Enable debugging
         --noop                       Don't make changes
+        --templates-only             Only update host templates, don't create hosts
         --interface-cidr CIDR        Only consider interfaces matching the given CIDR
         --connect-by-ip              When adding new hosts, get Zabbix to connect to those hosts by
                                      IP address instead of hostname. Useful in scenarios where you
@@ -66,7 +67,7 @@ The URL, username and password options are self-explanatory.
 
 Passing ```--noop``` will report on the changes to be made, but not make any.
 
-
+Passing ```--templates-only``` will not create any hosts found in MCollective but not in Zabbix, only update the templates on existing hosts.  This is useful if you want to use some other discovery method (E.G. Zabbix discovery) but still use ZCollective to keep Template associations up to date.
 
 
 ## Example

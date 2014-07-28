@@ -68,6 +68,11 @@ optparse = OptionParser.new do |opts|
     opts.on('-n', '--noop', 'Don\'t make changes') do
         options[:noop] = true
     end
+    
+    options[:templates_only] = false
+    opts.on('-t', '--templates-only', 'Only update host templates, don\'t create hosts') do
+        options[:templates_only] = true
+    end
 
     options[:interface_cidr] = '0.0.0.0/0'
     opts.on('-c', '--interface-cidr CIDR', 'Only consider interfaces matching the given CIDR') do |c|
@@ -501,12 +506,16 @@ hosts.each do |host,data|
 
             log.info("--noop passed - not making changes")
 
+        elsif options[:templates_only]
+
+            log.info("--templates-only passed - not creating new host")
+
         else 
 
-            # If we're not in --noop mode, create the host with the
-            #  zabbix API.  Hosts need at least one interface (for now
-            #  we're just adding a Zabbix agent interface), and need
-            #  to be in a group.
+            # If we're not in --noop  or --templates-only mode, create the host
+            #   with the zabbix API.  Hosts need at least one interface (for
+            #   now we're just adding a Zabbix agent interface), and need to
+            #   be in a group.
 
             resp = zabbix_client.request( 'host.create',
                 'host'       => host,
